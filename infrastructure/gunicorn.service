@@ -6,7 +6,7 @@ After=network.target
 User=root
 Group=www-data
 WorkingDirectory=/root/sarj-chatbot-backend
-Environment="PATH=/root/sarj-chatbot-backend/.venv/bin"
+EnvironmentFile=/root/sarj-chatbot-backend/.env
 ExecStart=/root/sarj-chatbot-backend/.venv/bin/gunicorn \
     -b 0.0.0.0:8080 \
     main:app

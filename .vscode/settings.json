@@ -1,0 +1,25 @@
+{
+  // Use Black for formatting
+  "python.formatting.provider": "black",
+  "editor.formatOnSave": true,
+
+  // Linting with Flake8
+  "python.linting.enabled": true,
+  "python.linting.flake8Enabled": true,
+  "python.linting.pylintEnabled": false,
+
+  // Optional: auto-detect virtualenv (adjust if needed)
+  "python.venvPath": "${workspaceFolder}/.venv",
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+
+  // Black specific settings
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
+
+  // Flake8 line length (match Black)
+  "python.linting.flake8Args": ["--max-line-length=130"],
+
+  // Black line length (new formatter extension uses this setting)
+  "black-formatter.args": ["--line-length=130"]
+}

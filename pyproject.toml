@@ -1,0 +1,19 @@
+[project]
+name = "weather-chatbot"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "black>=25.1.0",
+    "flake8>=7.3.0",
+    "flask>=3.1.2",
+    "flask-cors>=6.0.1",
+    "google-generativeai>=0.8.5",
+    "ipdb>=0.13.13",
+    "ipython>=9.5.0",
+    "isort>=6.0.1",
+    "openai>=1.107.2",
+    "python-dotenv>=1.1.1",
+    "requests>=2.32.5",
+]

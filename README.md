@@ -1,6 +1,6 @@
 # Weather Chatbot with Automated Evaluation System
 
-A production-ready weather chatbot system with streaming responses, automated quality evaluation, and comprehensive analytics. The system enforces strict scope control to handle only weather-related queries while providing real-time weather data through multiple AI models.
+A weather chatbot system with streaming responses, automated quality evaluation, and comprehensive analytics. The system enforces strict scope control to handle only weather-related queries while providing real-time weather data through multiple AI models.
 
 ## Architecture Overview
 

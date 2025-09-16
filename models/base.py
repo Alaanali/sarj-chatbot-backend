@@ -1,6 +1,7 @@
 import json
 from typing import Generator, Protocol
 
+from context.manager import ContextManager, conversation_context
 from tools.weather import get_current_weather, get_weather_forecast
 
 
@@ -112,3 +113,49 @@ class ModalStreamingHandler(Protocol):
                 }
         except Exception as e:
             return {"error": f"Tool execution failed: {str(e)}", "function": function_name, "arguments": function_args}
+
+
+class ContextAwareModalStreamingHandler(ModalStreamingHandler):
+    """Streaming handler that delegates all context updates to ContextManager"""
+
+    def set_model_name(self, model_name: str):
+        state = ContextManager._get_state()
+        state.model_name = model_name
+        ContextManager._set_state(state)
+
+    def set_user_message(self, message: str):
+        ContextManager.set_user_message(message)
+
+    def _format_sse(self, data: dict) -> str:
+        event_type = data.get("type")
+
+        if event_type == "text_start":
+            ContextManager.start_assistant_response()
+
+        elif event_type == "text_delta":
+            ContextManager.append_response(data.get("delta", ""))
+
+        elif event_type == "tool_call":
+            ContextManager.set_pending_tool_call(
+                function_name=data.get("function_name"),
+                arguments=data.get("arguments", {}),
+            )
+
+        elif event_type == "weather_data":
+            ContextManager.resolve_pending_tool_call(
+                result=data.get("data", {}),
+                execution_time_ms=data.get("execution_time", 0),
+                error_message=data.get("data", {}).get("error"),
+            )
+
+        elif event_type == "done":
+            ContextManager.finalize_assistant_response()
+
+        elif event_type == "error":
+            print("error")
+            ContextManager.finalize_assistant_response(
+                error_occurred=True,
+                error_message=data.get("message", "Unknown error"),
+            )
+
+        return f"data: {json.dumps(data)}\n\n"

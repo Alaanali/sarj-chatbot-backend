@@ -3,10 +3,10 @@ from typing import Generator
 
 import google.generativeai as genai
 
-from models.base import ModalStreamingHandler
+from models.base import ContextAwareModalStreamingHandler
 
 
-class GeminiStreamingHandler(ModalStreamingHandler):
+class GeminiStreamingHandler(ContextAwareModalStreamingHandler):
     def __init__(self, api_key: str, model: str = "gemini-2.0-flash-lite"):
         genai.configure(api_key=api_key)
         self.model_name = model
@@ -15,6 +15,10 @@ class GeminiStreamingHandler(ModalStreamingHandler):
         )
 
     def stream_chat(self, user_message: str) -> Generator[str, None, None]:
+
+        self.set_model_name(self.model_name)
+        self.set_user_message(user_message)
+
         start_time = time.time()
 
         try:

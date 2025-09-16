@@ -4,10 +4,10 @@ from typing import Generator
 
 import openai
 
-from models.base import ModalStreamingHandler
+from models.base import ContextAwareModalStreamingHandler
 
 
-class ChatGPTStreamingHandler(ModalStreamingHandler):
+class ChatGPTStreamingHandler(ContextAwareModalStreamingHandler):
 
     def __init__(self, api_key: str, model: str = "gpt-5-nano"):
         self.client = openai.OpenAI(api_key=api_key)
@@ -16,6 +16,11 @@ class ChatGPTStreamingHandler(ModalStreamingHandler):
         self.system_message = self._get_system_message()
 
     def stream_chat(self, user_message: str) -> Generator[str, None, None]:
+
+        # Log user message
+        self.set_model_name(self.model)
+        self.set_user_message(user_message)
+
         start_time = time.time()
 
         try:

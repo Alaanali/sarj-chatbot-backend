@@ -1,0 +1,17 @@
+[Unit]
+Description=Gunicorn service for Flask app
+After=network.target
+
+[Service]
+User=root
+Group=www-data
+WorkingDirectory=/root/sarj-chatbot-backend
+Environment="PATH=/root/sarj-chatbot-backend/.venv/bin"
+ExecStart=/root/sarj-chatbot-backend/.venv/bin/gunicorn \
+    -b 0.0.0.0:8080 \
+    main:app
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

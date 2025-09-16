@@ -355,6 +355,11 @@ def get_analytics_trends():
         return jsonify({"error": str(e)}), 500
 
 
+@app.route("/check-domain")
+def check_domain():
+    return jsonify({"message": "ok"})
+
+
 if __name__ == "__main__":
     # Create tables on startup
     try:
